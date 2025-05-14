@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#4361ee">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Регистрация | Название Сервиса</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-hover: #3a56d4;
+            --google: #4285F4;
+            --yandex: #FF0000;
+            --error: #ef233c;
+            --success: #4cc9f0;
+            --text: #2b2d42;
+            --text-light: #8d99ae;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e9ecef;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --text: #f8f9fa;
+                --text-light: #adb5bd;
+                --bg: #121212;
+                --card-bg: #1e1e1e;
+                --border: #2d2d2d;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            padding-bottom: calc(20px + var(--safe-area-inset-bottom));
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 480px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo img {
+            height: 48px;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .card-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-header p {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-control.is-invalid {
+            border-color: var(--error);
+        }
+
+        .form-control.is-valid {
+            border-color: var(--success);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 42px;
+            color: var(--text-light);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invalid-feedback {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .password-strength {
+            height: 4px;
+            background-color: var(--border);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: var(--transition);
+        }
+
+        .strength-0 {
+            width: 20%;
+            background-color: var(--error);
+        }
+
+        .strength-1 {
+            width: 40%;
+            background-color: #ff6b35;
+        }
+
+        .strength-2 {
+            width: 60%;
+            background-color: #f8961e;
+        }
+
+        .strength-3 {
+            width: 80%;
+            background-color: #90be6d;
+        }
+
+        .strength-4 {
+            width: 100%;
+            background-color: var(--success);
+        }
+
+        .form-footer {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 14px 16px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-google {
+            background-color: white;
+            color: #3c4043;
+            border: 1px solid var(--border);
+        }
+
+        .btn-google:hover, .btn-google:focus {
+            background-color: #f8f9fa;
+        }
+
+        .btn-yandex {
+            background-color: var(--yandex);
+            color: white;
+            border: 1px solid var(--yandex);
+        }
+
+        .btn-yandex:hover, .btn-yandex:focus {
+            background-color: #e60000;
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .btn-google .spinner {
+            border-top-color: #3c4043;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .divider::before {
+            margin-right: 12px;
+        }
+
+        .divider::after {
+            margin-left: 12px;
+        }
+
+        .terms {
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: center;
+            margin-top: 16px;
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 15px;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(4px); }
+            30%, 50%, 70% { transform: translateX(-6px); }
+            40%, 60% { transform: translateX(6px); }
+        }
+
+        @media (max-width: 576px) {
+            .card {
+                padding: 24px;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+            
+            body {
+                padding: 0;
+                padding-bottom: var(--safe-area-inset-bottom);
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .form-control {
+                padding: 16px;
+                font-size: 16px;
+            }
+            
+            .btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+            
+            input, button, select, textarea {
+                font-size: 16px !important;
+            }
+            
+            a, button {
+                -webkit-touch-callout: none;
+                touch-action: manipulation;
+            }
+        }
+
+        @media (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+            .form-control {
+                font-size: 16px;
+                min-height: 52px;
+            }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .card {
+                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px);
+                background-color: rgba(var(--card-bg), 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="logo.png" alt="Логотип" loading="lazy">
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h1>Создайте аккаунт</h1>
+                <p>Начните пользоваться нашим сервисом прямо сейчас</p>
+            </div>
+            
+            <form id="registrationForm" novalidate>
+                <div class="form-group">
+                    <label for="name" class="form-label">Имя</label>
+                    <input type="text" id="name" class="form-control" placeholder="Введите ваше имя" required>
+                    <div class="invalid-feedback">Пожалуйста, введите ваше имя</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="example@mail.com" required inputmode="email">
+                    <div class="invalid-feedback">Пожалуйста, введите корректный email</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Пароль</label>
+                    <input type="password" id="password" class="form-control" placeholder="Не менее 8 символов" required>
+                    <button type="button" class="input-icon" id="togglePassword" aria-label="Показать пароль">
+                        <i class="far fa-eye"></i>
+                    </button>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="passwordStrength"></div>
+                    </div>
+                    <div class="invalid-feedback" id="passwordError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Подтвердите пароль</label>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Повторите ваш пароль" required>
+                    <div class="invalid-feedback">Пароли не совпадают</div>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <span id="btnText">Зарегистрироваться</span>
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                    
+                    <div class="divider">или</div>
+                    
+                    <button type="button" class="btn btn-google" id="googleSignIn">
+                        <i class="fab fa-google"></i>
+                        Продолжить с Google
+                    </button>
+                    
+                    <button type="button" class="btn btn-yandex" id="yandexSignIn">
+                        <i class="fab fa-yandex"></i>
+                        Продолжить с Яндекс
+                    </button>
+                </div>
+                
+                <div class="terms">
+                    Нажимая кнопку, вы соглашаетесь с <a href="#" target="_blank">Условиями использования</a> и <a href="#" target="_blank">Политикой конфиденциальности</a>
+                </div>
+            </form>
+        </div>
+        
+        <div class="login-link">
+            Уже есть аккаунт? <a href="вход.html">Войти</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registrationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            const passwordStrength = document.getElementById('passwordStrength');
+            const googleSignIn = document.getElementById('googleSignIn');
+            const yandexSignIn = document.getElementById('yandexSignIn');
+            
+            function setupMobileOptimizations() {
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.addEventListener('focus', () => {
+                        if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                            const viewportMeta = document.querySelector('meta[name="viewport"]');
+                            if (viewportMeta) {
+                                viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0';
+                                setTimeout(() => {
+                                    viewportMeta.content = 'width=device-width, initial-scale=1.0';
+                                }, 500);
+                            }
+                        }
+                    });
+                });
+                
+                if (/Android/i.test(navigator.userAgent)) {
+                    document.documentElement.style.setProperty('--safe-area-inset-bottom', '20px');
+                }
+            }
+            
+            togglePassword.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                    this.setAttribute('aria-label', 'Скрыть пароль');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                    this.setAttribute('aria-label', 'Показать пароль');
+                }
+            });
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 8) strength++;
+                if (/\d/.test(password)) strength++;
+                if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+                if (/[^a-zA-Z0-9]/.test(password)) strength++;
+                
+                passwordStrength.className = 'strength-bar';
+                if (password.length > 0) {
+                    passwordStrength.classList.add(`strength-${strength}`);
+                }
+            });
+            
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+            
+            function validateBirthdate(date) {
+                if (!date) return false;
+                
+                const birthDate = new Date(date);
+                const currentDate = new Date();
+                const age = currentDate.getFullYear() - birthDate.getFullYear();
+                const monthDiff = currentDate.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
+                    return age - 1 >= 18;
+                }
+                
+                return age >= 18;
+            }
+            
+            function showError(input, message) {
+                input.classList.add('is-invalid');
+                const errorElement = input.nextElementSibling;
+                while (errorElement && !errorElement.classList.contains('invalid-feedback')) {
+                    errorElement = errorElement.nextElementSibling;
+                }
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                }
+            }
+            
+            function hideError(input) {
+                input.classList.remove('is-invalid');
+                const errorElement = input.nextElementSibling;
+                while (errorElement && !errorElement.classList.contains('invalid-feedback')) {
+                    errorElement = errorElement.nextElementSibling;
+                }
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+            
+            googleSignIn.addEventListener('click', function() {
+                btnText.textContent = 'Вход через Google...';
+                spinner.style.display = 'block';
+                googleSignIn.disabled = true;
+                
+                setTimeout(() => {
+                    window.location.href = 'welcome.html?auth=google';
+                }, 1500);
+            });
+            
+            yandexSignIn.addEventListener('click', function() {
+                const yandexBtnText = yandexSignIn.querySelector('span') || document.createElement('span');
+                yandexBtnText.textContent = 'Вход через Яндекс...';
+                yandexSignIn.insertBefore(yandexBtnText, yandexSignIn.querySelector('.spinner'));
+                const yandexSpinner = yandexSignIn.querySelector('.spinner') || document.createElement('div');
+                yandexSpinner.className = 'spinner';
+                yandexSignIn.appendChild(yandexSpinner);
+                yandexSpinner.style.display = 'block';
+                yandexSignIn.disabled = true;
+                
+                setTimeout(() => {
+                    window.location.href = 'welcome.html?auth=yandex';
+                }, 1500);
+            });
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const emailInput = document.getElementById('email');
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                const birthdateInput = document.getElementById('birthdate');
+                
+                hideError(nameInput);
+                hideError(emailInput);
+                hideError(passwordInput);
+                hideError(confirmPasswordInput);
+                hideError(birthdateInput);
+                
+                let isValid = true;
+                
+                if (!nameInput.value.trim()) {
+                    showError(nameInput, 'Пожалуйста, введите ваше имя');
+                    isValid = false;
+                }
+                
+                if (!validateEmail(emailInput.value.trim())) {
+                    showError(emailInput, 'Пожалуйста, введите корректный email');
+                    isValid = false;
+                }
+                
+                if (passwordInput.value.length < 8) {
+                    showError(passwordInput, 'Пароль должен содержать минимум 8 символов');
+                    isValid = false;
+                } else if (!/[A-Z]/.test(passwordInput.value) || !/\d/.test(passwordInput.value)) {
+                    showError(passwordInput, 'Пароль должен содержать цифры и заглавные буквы');
+                    isValid = false;
+                }
+                
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    showError(confirmPasswordInput, 'Пароли не совпадают');
+                    isValid = false;
+                }
+                
+                if (!validateBirthdate(birthdateInput.value)) {
+                    showError(birthdateInput, 'Вы должны быть старше 18 лет');
+                    isValid = false;
+                }
+                
+                if (!isValid) {
+                    form.classList.add('shake');
+                    setTimeout(() => form.classList.remove('shake'), 500);
+                    return;
+                }
+                
+                btnText.textContent = 'Регистрация...';
+                spinner.style.display = 'block';
+                submitBtn.disabled = true;
+                
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    window.location.href = 'welcome.html';
+                } catch (error) {
+                    alert('Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.');
+                    console.error(error);
+                } finally {
+                    btnText.textContent = 'Зарегистрироваться';
+                    spinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            });
+            
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function(e) {
+                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
+                    e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
+                });
+            }
+            
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.checkValidity()) {
+                        this.classList.remove('is-invalid');
+                        hideError(this);
+                    }
+                });
+            });
+            
+            setupMobileOptimizations();
+            
+            function detectOS() {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                
+                if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                    document.documentElement.classList.add('ios');
+                }
+                
+                if (/android/i.test(userAgent)) {
+                    document.documentElement.classList.add('android');
+                }
+            }
+            
+            detectOS();
+        });
+    </script>
+</body>
+</html>
