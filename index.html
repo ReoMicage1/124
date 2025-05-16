@@ -193,7 +193,7 @@
         }
         
         .sidebar {
-            width: 300px;
+            width: 350px;
             background-color: white;
             border-right: 1px solid var(--border-color);
             overflow-y: auto;
@@ -2232,7 +2232,305 @@
             border-color: #444;
             color: #e0e0e0;
         }
-        
+
+        /* New styles for auth buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: rgba(66, 133, 244, 0.1);
+        }
+
+        .register-btn {
+            background-color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            color: white;
+        }
+
+        .register-btn:hover {
+            background-color: #3367d6;
+            border-color: #3367d6;
+        }
+
+        body.dark-theme .login-btn {
+            color: #e0e0e0;
+            border-color: #e0e0e0;
+        }
+
+        body.dark-theme .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-theme .register-btn {
+            background-color: #4285F4;
+            border-color: #4285F4;
+        }
+
+        body.dark-theme .register-btn:hover {
+            background-color: #3367d6;
+            border-color: #3367d6;
+        }
+
+        /* New styles for street view button */
+        .street-view-btn {
+            position: absolute;
+            bottom: 150px;
+            right: 30px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: var(--primary-color);
+            transition: all 0.3s;
+        }
+
+        body.dark-theme .street-view-btn {
+            background-color: #2d2d2d;
+            border-color: #444;
+        }
+
+        .street-view-btn:hover {
+            background-color: #f1f3f4;
+            transform: scale(1.05);
+        }
+
+        body.dark-theme .street-view-btn:hover {
+            background-color: #333;
+        }
+
+        /* New styles for tilt button */
+        .tilt-btn {
+            position: absolute;
+            top: 15px;
+            right: 540px;
+            z-index: 1000;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        body.dark-theme .tilt-btn {
+            background-color: #2d2d2d;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        /* New styles for transport button */
+        .transport-btn {
+            position: absolute;
+            top: 15px;
+            right: 580px;
+            z-index: 1000;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        body.dark-theme .transport-btn {
+            background-color: #2d2d2d;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        /* New styles for map type selector */
+        .map-type-panel {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.dark-theme .map-type-panel {
+            background-color: #1e1e1e;
+            border-color: #444;
+        }
+
+        .map-type-panel button {
+            display: block;
+            width: 100%;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .map-type-panel button:hover {
+            background-color: #f1f3f4;
+        }
+
+        body.dark-theme .map-type-panel button:hover {
+            background-color: #333;
+        }
+
+        .map-type-panel button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* New styles for transport panel */
+        .transport-panel {
+            position: absolute;
+            top: 60px;
+            right: 15px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.dark-theme .transport-panel {
+            background-color: #1e1e1e;
+            border-color: #444;
+        }
+
+        .transport-panel button {
+            display: block;
+            width: 100%;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            background-color: transparent;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .transport-panel button:hover {
+            background-color: #f1f3f4;
+        }
+
+        body.dark-theme .transport-panel button:hover {
+            background-color: #333;
+        }
+
+        .transport-panel button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* New styles for profile menu */
+        .profile-menu-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .profile-menu-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        body.dark-theme .profile-menu-item:hover {
+            background-color: #333;
+        }
+
+        .profile-menu-item i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* New styles for theme selector */
+        .theme-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .theme-option:hover {
+            background-color: #f5f5f5;
+        }
+
+        body.dark-theme .theme-option:hover {
+            background-color: #333;
+        }
+
+        .theme-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .theme-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .light-theme-preview {
+            background: linear-gradient(135deg, #ffffff 50%, #f5f5f5 50%);
+        }
+
+        .dark-theme-preview {
+            background: linear-gradient(135deg, #121212 50%, #1e1e1e 50%);
+        }
+
+        .system-theme-preview {
+            background: linear-gradient(135deg, #ffffff 50%, #121212 50%);
+        }
+
+        .custom-theme-preview {
+            background: linear-gradient(135deg, #4285F4 50%, #34A853 50%);
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 position: absolute;
@@ -2275,7 +2573,9 @@
             .measure-btn,
             .whats-nearby-btn,
             .real-time-traffic-btn,
-            .theme-toggle-btn {
+            .theme-toggle-btn,
+            .tilt-btn,
+            .transport-btn {
                 display: block;
             }
             
@@ -2319,6 +2619,14 @@
                 right: 460px;
             }
             
+            .tilt-btn {
+                right: 500px;
+            }
+            
+            .transport-btn {
+                right: 540px;
+            }
+            
             .user-profile-menu {
                 width: 180px;
             }
@@ -2336,35 +2644,34 @@
                 <button class="active" onclick="translatePage('ru')">Рус</button>
                 <button onclick="translatePage('en')">Eng</button>
             </div>
-            <div class="user-profile" onclick="toggleProfileMenu()">
+            <div class="auth-buttons">
+                <a href="вход.html" class="auth-btn login-btn"><i class="fas fa-sign-in-alt"></i> Вход</a>
+                <a href="Регистрация.html" class="auth-btn register-btn"><i class="fas fa-user-plus"></i> Регистрация</a>
+            </div>
+            <div class="user-profile" onclick="toggleProfileMenu()" style="display: none;">
                 <i class="fas fa-user"></i>
                 <div class="user-profile-menu" id="profileMenu">
-                    <div class="user-profile-menu-item" onclick="showProfile()">
+                    <div class="profile-menu-item" onclick="showProfile()">
                         <i class="fas fa-user"></i> Профиль
                     </div>
-                    <div class="user-profile-menu-item" onclick="showSettings()">
+                    <div class="profile-menu-item" onclick="showSettings()">
                         <i class="fas fa-cog"></i> Настройки
                     </div>
-                    <div class="user-profile-menu-item" onclick="showFriends()">
+                    <div class="profile-menu-item" onclick="showFriends()">
                         <i class="fas fa-users"></i> Друзья
                     </div>
-                    <div class="user-profile-menu-item" onclick="showARMode()">
+                    <div class="profile-menu-item" onclick="showARMode()">
                         <i class="fas fa-street-view"></i> AR-режим
                     </div>
-                    <div class="user-profile-menu-item" onclick="showInstructions()">
+                    <div class="profile-menu-item" onclick="showInstructions()">
                         <i class="fas fa-book"></i> Инструкция
                     </div>
-                    <div class="user-profile-menu-item" onclick="logout()">
+                    <div class="profile-menu-item" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Выйти
                     </div>
                 </div>
             </div>
         </div>
-    </header>
-<div class="auth-buttons">
-                <a href="вход.html">Вход / Регистрация</a>
-            </div>
- </div>
     </header>
 
     <div class="banner">
@@ -2378,7 +2685,7 @@
         <button class="route-btn" onclick="toggleRoutePanel()"><i class="fas fa-route"></i></button>
         <button class="share-btn" onclick="toggleSharePanel()"><i class="fas fa-share-alt"></i></button>
         <button class="create-marker-btn" onclick="createCustomMarker()"><i class="fas fa-map-marker-alt"></i></button>
-        <button class="map-type-selector" onclick="toggleMapType()"><i class="fas fa-layer-group"></i></button>
+        <button class="map-type-selector" onclick="toggleMapTypePanel()"><i class="fas fa-layer-group"></i></button>
         <button class="traffic-toggle" onclick="toggleTraffic()"><i class="fas fa-traffic-light"></i></button>
         <button class="accessibility-btn" onclick="showAccessibilityOptions()"><i class="fas fa-universal-access"></i></button>
         <button class="offline-btn" onclick="toggleOfflineMode()"><i class="fas fa-cloud-download-alt"></i></button>
@@ -2386,11 +2693,14 @@
         <button class="collaboration-btn" onclick="showCollaboration()"><i class="fas fa-users-cog"></i></button>
         <button class="analytics-btn" onclick="showAnalytics()"><i class="fas fa-chart-line"></i></button>
         <button class="walk-mode-btn" onclick="startWalkMode()"><i class="fas fa-walking"></i></button>
+        <button class="street-view-btn" onclick="startStreetView()"><i class="fas fa-street-view"></i></button>
         <button class="drawing-btn" onclick="toggleDrawingTools()"><i class="fas fa-pencil-alt"></i></button>
         <button class="measure-btn" onclick="toggleMeasureTool()"><i class="fas fa-ruler"></i></button>
         <button class="whats-nearby-btn" onclick="toggleWhatsNearby()"><i class="fas fa-search-location"></i></button>
         <button class="real-time-traffic-btn" onclick="toggleRealTimeTraffic()"><i class="fas fa-car"></i></button>
-        <button class="theme-toggle-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+        <button class="theme-toggle-btn" onclick="toggleThemePanel()"><i class="fas fa-moon"></i></button>
+        <button class="tilt-btn" onclick="toggleTilt()"><i class="fas fa-angle-double-up"></i></button>
+        <button class="transport-btn" onclick="toggleTransportPanel()"><i class="fas fa-bus"></i></button>
         
         <div class="route-panel" id="routePanel">
             <select id="transportType">
@@ -2410,6 +2720,19 @@
                 <strong>HTML-код для вставки:</strong>
                 <textarea id="embedCode" style="width: 100%; height: 60px; margin-top: 5px;"></textarea>
             </div>
+        </div>
+        
+        <div class="map-type-panel" id="mapTypePanel">
+            <button onclick="setMapType('map')"><i class="fas fa-map"></i> Схема</button>
+            <button onclick="setMapType('satellite')"><i class="fas fa-satellite"></i> Спутник</button>
+            <button onclick="setMapType('hybrid')"><i class="fas fa-layer-group"></i> Гибрид</button>
+        </div>
+        
+        <div class="transport-panel" id="transportPanel">
+            <button onclick="showTransport('bus')"><i class="fas fa-bus"></i> Автобусы</button>
+            <button onclick="showTransport('tram')"><i class="fas fa-tram"></i> Трамваи</button>
+            <button onclick="showTransport('train')"><i class="fas fa-train"></i> Поезда</button>
+            <button onclick="showTransport('suburban')"><i class="fas fa-subway"></i> Электрички</button>
         </div>
         
         <div class="drawing-tools" id="drawingTools">
@@ -2798,6 +3121,27 @@
                     <h3>Конфиденциальность</h3>
                     <label><input type="checkbox" id="showLocation" checked> Показывать мое местоположение друзьям</label>
                     <label><input type="checkbox" id="searchByEmail"> Разрешить поиск по email</label>
+                </div>
+                <div class="settings-section">
+                    <h3>Тема оформления</h3>
+                    <div class="theme-selector">
+                        <div class="theme-option" onclick="setTheme('light')">
+                            <div class="theme-preview light-theme-preview"></div>
+                            <span>Светлая</span>
+                        </div>
+                        <div class="theme-option" onclick="setTheme('dark')">
+                            <div class="theme-preview dark-theme-preview"></div>
+                            <span>Темная</span>
+                        </div>
+                        <div class="theme-option" onclick="setTheme('system')">
+                            <div class="theme-preview system-theme-preview"></div>
+                            <span>Системная</span>
+                        </div>
+                        <div class="theme-option" onclick="setTheme('custom')">
+                            <div class="theme-preview custom-theme-preview"></div>
+                            <span>Пользовательская</span>
+                        </div>
+                    </div>
                 </div>
                 <button class="save-settings-btn" onclick="saveSettings()">Сохранить настройки</button>
             </div>
