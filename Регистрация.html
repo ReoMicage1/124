@@ -16,7 +16,7 @@
             --google: #4285F4;
             --yandex: #FF0000;
             --error: #ef233c;
-            --success: #4cc9f0;
+            --success: #2ecc71;
             --text: #2b2d42;
             --text-light: #8d99ae;
             --bg: #f8f9fa;
@@ -265,10 +265,32 @@
             border-radius: 50%;
             border-top-color: white;
             animation: spin 1s ease-in-out infinite;
+            display: none;
         }
 
         .btn-google .spinner {
             border-top-color: #3c4043;
+        }
+
+        .checkmark {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--success);
+            position: relative;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
         }
 
         @keyframes spin {
@@ -342,6 +364,16 @@
             20%, 80% { transform: translateX(4px); }
             30%, 50%, 70% { transform: translateX(-6px); }
             40%, 60% { transform: translateX(6px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
         }
 
         @media (max-width: 576px) {
@@ -424,7 +456,7 @@
                 
                 <div class="form-group">
                     <label for="password" class="form-label">Пароль</label>
-                    <input type="password" id="password" class="form-control" placeholder="Не менее 8 символов" required>
+                    <input type="password" id="password" class="form-control" placeholder="Не менее 8 символов" required minlength="8">
                     <button type="button" class="input-icon" id="togglePassword" aria-label="Показать пароль">
                         <i class="far fa-eye"></i>
                     </button>
@@ -444,6 +476,7 @@
                     <button type="submit" class="btn btn-primary" id="submitBtn">
                         <span id="btnText">Зарегистрироваться</span>
                         <div class="spinner" id="spinner"></div>
+                        <div class="checkmark" id="checkmark"></div>
                     </button>
                     
                     <div class="divider">или</div>
@@ -472,16 +505,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Элементы формы
             const form = document.getElementById('registrationForm');
             const submitBtn = document.getElementById('submitBtn');
             const btnText = document.getElementById('btnText');
             const spinner = document.getElementById('spinner');
+            const checkmark = document.getElementById('checkmark');
             const togglePassword = document.getElementById('togglePassword');
             const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
             const passwordStrength = document.getElementById('passwordStrength');
             const googleSignIn = document.getElementById('googleSignIn');
             const yandexSignIn = document.getElementById('yandexSignIn');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
             
+            // Состояние валидации
+            let isFormValid = false;
+            
+            // Настройки для мобильных устройств
             function setupMobileOptimizations() {
                 document.querySelectorAll('input, select, textarea').forEach(el => {
                     el.addEventListener('focus', () => {
@@ -502,6 +544,7 @@
                 }
             }
             
+            // Переключение видимости пароля
             togglePassword.addEventListener('click', function() {
                 const icon = this.querySelector('i');
                 if (passwordInput.type === 'password') {
@@ -515,8 +558,12 @@
                 }
             });
             
+            // Индикатор сложности пароля
             passwordInput.addEventListener('input', function() {
-                const password = this.value;
+                updatePasswordStrength(this.value);
+            });
+            
+            function updatePasswordStrength(password) {
                 let strength = 0;
                 
                 if (password.length >= 8) strength++;
@@ -528,27 +575,14 @@
                 if (password.length > 0) {
                     passwordStrength.classList.add(`strength-${strength}`);
                 }
-            });
+            }
             
+            // Валидация email
             function validateEmail(email) {
                 return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
             }
             
-            function validateBirthdate(date) {
-                if (!date) return false;
-                
-                const birthDate = new Date(date);
-                const currentDate = new Date();
-                const age = currentDate.getFullYear() - birthDate.getFullYear();
-                const monthDiff = currentDate.getMonth() - birthDate.getMonth();
-                
-                if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < birthDate.getDate())) {
-                    return age - 1 >= 18;
-                }
-                
-                return age >= 18;
-            }
-            
+            // Показать ошибку
             function showError(input, message) {
                 input.classList.add('is-invalid');
                 const errorElement = input.nextElementSibling;
@@ -559,8 +593,10 @@
                     errorElement.textContent = message;
                     errorElement.style.display = 'block';
                 }
+                isFormValid = false;
             }
             
+            // Скрыть ошибку
             function hideError(input) {
                 input.classList.remove('is-invalid');
                 const errorElement = input.nextElementSibling;
@@ -572,16 +608,55 @@
                 }
             }
             
+            // Валидация формы в реальном времени
+            function validateForm() {
+                isFormValid = true;
+                
+                // Валидация имени
+                if (!nameInput.value.trim()) {
+                    showError(nameInput, 'Пожалуйста, введите ваше имя');
+                } else {
+                    hideError(nameInput);
+                }
+                
+                // Валидация email
+                if (!validateEmail(emailInput.value.trim())) {
+                    showError(emailInput, 'Пожалуйста, введите корректный email');
+                } else {
+                    hideError(emailInput);
+                }
+                
+                // Валидация пароля
+                if (passwordInput.value.length < 8) {
+                    showError(passwordInput, 'Пароль должен содержать минимум 8 символов');
+                } else if (!/[A-Z]/.test(passwordInput.value) || !/\d/.test(passwordInput.value)) {
+                    showError(passwordInput, 'Пароль должен содержать цифры и заглавные буквы');
+                } else {
+                    hideError(passwordInput);
+                }
+                
+                // Подтверждение пароля
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    showError(confirmPasswordInput, 'Пароли не совпадают');
+                } else if (confirmPasswordInput.value.length > 0) {
+                    hideError(confirmPasswordInput);
+                }
+                
+                return isFormValid;
+            }
+            
+            // Обработчик для кнопки Google
             googleSignIn.addEventListener('click', function() {
                 btnText.textContent = 'Вход через Google...';
                 spinner.style.display = 'block';
                 googleSignIn.disabled = true;
                 
                 setTimeout(() => {
-                    window.location.href = 'welcome.html?auth=google';
+                    window.location.href = 'index.html?auth=google';
                 }, 1500);
             });
             
+            // Обработчик для кнопки Яндекс
             yandexSignIn.addEventListener('click', function() {
                 const yandexBtnText = yandexSignIn.querySelector('span') || document.createElement('span');
                 yandexBtnText.textContent = 'Вход через Яндекс...';
@@ -593,95 +668,95 @@
                 yandexSignIn.disabled = true;
                 
                 setTimeout(() => {
-                    window.location.href = 'welcome.html?auth=yandex';
+                    window.location.href = 'index.html?auth=yandex';
                 }, 1500);
             });
             
+            // Обработчик отправки формы
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const nameInput = document.getElementById('name');
-                const emailInput = document.getElementById('email');
-                const passwordInput = document.getElementById('password');
-                const confirmPasswordInput = document.getElementById('confirmPassword');
-                const birthdateInput = document.getElementById('birthdate');
-                
-                hideError(nameInput);
-                hideError(emailInput);
-                hideError(passwordInput);
-                hideError(confirmPasswordInput);
-                hideError(birthdateInput);
-                
-                let isValid = true;
-                
-                if (!nameInput.value.trim()) {
-                    showError(nameInput, 'Пожалуйста, введите ваше имя');
-                    isValid = false;
-                }
-                
-                if (!validateEmail(emailInput.value.trim())) {
-                    showError(emailInput, 'Пожалуйста, введите корректный email');
-                    isValid = false;
-                }
-                
-                if (passwordInput.value.length < 8) {
-                    showError(passwordInput, 'Пароль должен содержать минимум 8 символов');
-                    isValid = false;
-                } else if (!/[A-Z]/.test(passwordInput.value) || !/\d/.test(passwordInput.value)) {
-                    showError(passwordInput, 'Пароль должен содержать цифры и заглавные буквы');
-                    isValid = false;
-                }
-                
-                if (passwordInput.value !== confirmPasswordInput.value) {
-                    showError(confirmPasswordInput, 'Пароли не совпадают');
-                    isValid = false;
-                }
-                
-                if (!validateBirthdate(birthdateInput.value)) {
-                    showError(birthdateInput, 'Вы должны быть старше 18 лет');
-                    isValid = false;
-                }
-                
-                if (!isValid) {
+                // Валидация формы
+                if (!validateForm()) {
                     form.classList.add('shake');
                     setTimeout(() => form.classList.remove('shake'), 500);
                     return;
                 }
                 
+                // Блокировка кнопки и показ спиннера
+                submitBtn.disabled = true;
                 btnText.textContent = 'Регистрация...';
                 spinner.style.display = 'block';
-                submitBtn.disabled = true;
                 
                 try {
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    window.location.href = 'welcome.html';
+                    // Имитация запроса к серверу
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Успешная регистрация
+                    spinner.style.display = 'none';
+                    checkmark.style.display = 'block';
+                    btnText.textContent = 'Успешно!';
+                    submitBtn.classList.add('bounce');
+                    
+                    // Сохранение данных пользователя
+                    const userData = {
+                        name: nameInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        registered: new Date().toISOString()
+                    };
+                    localStorage.setItem('userProfile', JSON.stringify(userData));
+                    
+                    // Перенаправление через 1 секунду
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    window.location.href = 'index.html';
+                    
                 } catch (error) {
+                    // Обработка ошибки
+                    console.error('Ошибка регистрации:', error);
                     alert('Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.');
-                    console.error(error);
-                } finally {
+                    
+                    // Восстановление состояния кнопки
                     btnText.textContent = 'Зарегистрироваться';
                     spinner.style.display = 'none';
+                    checkmark.style.display = 'none';
                     submitBtn.disabled = false;
                 }
             });
             
-            const phoneInput = document.getElementById('phone');
-            if (phoneInput) {
-                phoneInput.addEventListener('input', function(e) {
-                    let x = e.target.value.replace(/\D/g, '').match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,2})(\d{0,2})/);
-                    e.target.value = !x[2] ? x[1] : '+7 (' + x[2] + (x[3] ? ') ' + x[3] : '') + (x[4] ? '-' + x[4] : '') + (x[5] ? '-' + x[5] : '');
-                });
-            }
-            
+            // Валидация в реальном времени при вводе
             document.querySelectorAll('.form-control').forEach(input => {
                 input.addEventListener('input', function() {
+                    validateForm();
+                    
+                    // Подсветка валидных полей
                     if (this.checkValidity()) {
                         this.classList.remove('is-invalid');
+                        this.classList.add('is-valid');
                         hideError(this);
+                    } else {
+                        this.classList.remove('is-valid');
+                    }
+                });
+                
+                // Убираем подсветку при потере фокуса, если поле пустое
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.classList.remove('is-valid');
                     }
                 });
             });
             
+            // Проверка паролей при вводе в поле подтверждения
+            confirmPasswordInput.addEventListener('input', function() {
+                if (passwordInput.value !== this.value) {
+                    showError(this, 'Пароли не совпадают');
+                } else {
+                    hideError(this);
+                    this.classList.add('is-valid');
+                }
+            });
+            
+            // Инициализация
             setupMobileOptimizations();
             
             function detectOS() {
